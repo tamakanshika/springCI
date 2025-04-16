@@ -10,7 +10,7 @@ pipeline {
         IMAGE_NAME = 'springboot-app'
         CONTAINER_NAME = 'springboot-container'
         HOST_PORT = '8081'
-        CONTAINER_PORT = '8080'
+        CONTAINER_PORT = '8081'
     }
 
     stages {
