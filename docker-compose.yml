@@ -8,18 +8,31 @@ services:
     ports:
       - "8080:8080"
       - "50000:50000"
+    environment:
+      - JAVA_OPTS=-Djenkins.install.runSetupWizard=false
+    user: jenkins
+    group_add:
+        - docker
     volumes:
       - jenkins_home:/var/jenkins_home
-      - /var/run/docker.sock:/var/run/docker.sock
+#      - /var/run/docker.sock:/var/run/docker.sock
+#      - /usr/bin/docker:/usr/bin/docker
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
+      - type: bind
+        source: /usr/bin/docker
+        target: /usr/local/bin/docker
+        read_only: true
 
   springboot-app:
-    image: springboot-app
-    container_name: springboot-container
+    image: spring-app
+    container_name: spring-container
     build:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "8090:8090"
+      - "8081:8081"
     restart: always
     depends_on:
       - jenkins

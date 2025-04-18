@@ -8,15 +8,15 @@ pipeline {
 
     environment {
         IMAGE_NAME = 'springboot-app'
-        CONTAINER_NAME = 'springboot-container'
-        HOST_PORT = '8090'
-        CONTAINER_PORT = '8090'
+        CONTAINER_NAME = 'spring-container'
+        HOST_PORT = '8081'
+        CONTAINER_PORT = '8081'
     }
 
     stages {
         stage('Checkout') {
             steps {
-                git credentialsId: 'github-creds', url: 'https://github.com/tamakanshika/spring-boot-CI', branch: 'master'
+                git credentialsId: 'github-creds', url: 'https://github.com/tamakanshika/springCI', branch: 'master'
             }
         }
 

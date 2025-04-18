@@ -9,13 +9,18 @@ RUN apt-get update && apt-get install -y docker.io
 RUN apt-get install -y maven
 
 # Set Docker group permissions
-RUN groupadd -g 999 docker && \
-    usermod -aG docker jenkins
+RUN usermod -aG docker jenkins
 
-# Optional: install Java explicitly (if not already there)
-RUN apt-get install -y openjdk-17-jdk
+# # Optional: install Java explicitly (if not already there)
+# RUN apt-get install -y openjdk-17-jdk
+
+COPY jenkins/plugins.txt /usr/share/jenkins/ref/plugins.txt
+RUN jenkins-plugin-cli --plugin-file /usr/share/jenkins/ref/plugins.txt
+
+
+COPY jenkins/basic-security.groovy /usr/share/jenkins/ref/init.groovy.d/basic-security.groovy
+
+COPY jenkins/jobs.groovy /usr/share/jenkins/ref/init.groovy.d/jobs.groovy
 
 USER jenkins
 
-# Copy init.groovy.d or jobs into the image (if any)
-COPY jobs.groovy /usr/share/jenkins/ref/init.groovy.d/jobs.groovy
