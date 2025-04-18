@@ -2,17 +2,14 @@ FROM jenkins/jenkins:lts
 
 USER root
 
-# Install Docker CLI
-RUN apt-get update && apt-get install -y docker.io
 
-# Install Maven
+
+RUN apt-get update && apt-get install -y docker.io \
+    && groupadd -f docker \
+    && usermod -aG docker jenkins
+
 RUN apt-get install -y maven
 
-# Set Docker group permissions
-RUN usermod -aG docker jenkins
-
-# # Optional: install Java explicitly (if not already there)
-# RUN apt-get install -y openjdk-17-jdk
 
 COPY jenkins/plugins.txt /usr/share/jenkins/ref/plugins.txt
 RUN jenkins-plugin-cli --plugin-file /usr/share/jenkins/ref/plugins.txt
