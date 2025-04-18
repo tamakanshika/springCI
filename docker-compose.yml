@@ -10,20 +10,19 @@ services:
       - "50000:50000"
     environment:
       - JAVA_OPTS=-Djenkins.install.runSetupWizard=false
+      - DOCKER_HOST=unix:///var/run/docker.sock
     user: jenkins
     group_add:
         - docker
     volumes:
       - jenkins_home:/var/jenkins_home
-#      - /var/run/docker.sock:/var/run/docker.sock
-#      - /usr/bin/docker:/usr/bin/docker
-      - type: bind
-        source: /var/run/docker.sock
-        target: /var/run/docker.sock
+      - /var/run/docker.sock:/var/run/docker.sock
+
       - type: bind
         source: /usr/bin/docker
         target: /usr/local/bin/docker
         read_only: true
+    privileged: true
 
   springboot-app:
     image: spring-app
